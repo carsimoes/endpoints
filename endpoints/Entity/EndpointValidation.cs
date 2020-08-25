@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Endpoints.Data;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Endpoints.Entity
 {
     public static class EndpointValidation
     {
-        public static bool SerialNumber(string serialNumber)
+        public static bool SerialNumber(string serialNumber, bool create = false)
         {
             if (string.IsNullOrEmpty(serialNumber))
             {
@@ -14,6 +16,17 @@ namespace Endpoints.Entity
             }
             else
             {
+                if (create)
+                {
+                    var endpointFound = GlobalConfiguration.Endpoints.Where(e => e.SerialNumber == serialNumber)?.FirstOrDefault();
+
+                    if (endpointFound != null)
+                    {
+                        Console.WriteLine("Endpoint already exists!");
+                        return true;
+                    }
+                }
+
                 return false;
             }
         }

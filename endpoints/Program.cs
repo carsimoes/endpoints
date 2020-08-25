@@ -1,5 +1,6 @@
 ﻿using Endpoints.Data;
 using Endpoints.Entity;
+using Endpoints.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -21,22 +22,17 @@ namespace endpoints
         private static bool MainMenu()
         {
             var serviceProvider = new ServiceCollection()
-                .AddDbContext<EndpointsContext>(opt => opt.UseInMemoryDatabase("EndpointsDb"))
-                .AddSingleton<IEndpointRepository, EndpointRepository>()
+                .AddScoped<IEndpointService, EndpointService>()
                 .BuildServiceProvider();
 
-            var options = new DbContextOptionsBuilder<EndpointsContext>()
-                       .UseInMemoryDatabase(databaseName: "EndpointsDb")
-                       .Options;
-            var context = serviceProvider.GetService<EndpointsContext>();
-            var repository = serviceProvider.GetService<IEndpointRepository>();
+            var endpointService = serviceProvider.GetService<IEndpointService>();
 
             Console.Clear();
             Console.WriteLine("Choose an option:");
             Console.WriteLine("1) Insert a new endpoint");
             Console.WriteLine("2) Edit an existing endpoint");
             Console.WriteLine("3) Delete an existing endpoint");
-            Console.WriteLine("4) List all endpoint");
+            Console.WriteLine("4) List all endpoints");
             Console.WriteLine("5) Find an endpoint by serial number");
             Console.WriteLine("6) Exit");
 
@@ -47,184 +43,89 @@ namespace endpoints
             {
                 case "1":
 
-                    CreateEndpoint(new Endpoint());
+                    CreateEndpoint(endpointService);
 
                     return true;
 
                 case "2":
 
-                    EditEndpoint();
+                    EditEndpoint(endpointService);
 
                     return true;
 
                 case "3":
 
-                    Console.WriteLine("Enter a Serial number:");
-                    var serialNumberEdit = Console.ReadLine();
-
-                    while (EndpointValidation.SerialNumber(serialNumberEdit))
-                    {
-                        Console.WriteLine("Serial can't be empty! Input your Serial once more");
-                        serialNumberEdit = Console.ReadLine();
-                    }
-                    var endpointToEdit = GlobalConfiguration.Endpoints.Where(e => e.SerialNumber == serialNumberEdit)?.FirstOrDefault();
-
-                    if (endpointToEdit != null)
-                    {
-                        ConsoleKey response;
-                        do
-                        {
-                            Console.Write("Are you sure you want to delete? [y/n] ");
-                            response = Console.ReadKey(false).Key;   // true is intercept key (dont show), false is show
-                            if (response != ConsoleKey.Enter)
-                                Console.WriteLine();
-
-                        } while (response != ConsoleKey.Y && response != ConsoleKey.N);
-
-                        if (response == ConsoleKey.Y)
-                        {
-                            GlobalConfiguration.Endpoints.Remove(endpointToEdit);
-
-                            Console.WriteLine("Serial removed!");
-                            Console.WriteLine("");
-                            Console.WriteLine("Press a key to continue.");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Serial not found!");
-                        Console.WriteLine("");
-                        Console.WriteLine("Press a key to continue.");
-                        Console.ReadLine();
-                    }
+                    DeleteEndpoint(endpointService);
 
                     return true;
 
                 case "4":
-                    var endpoints = GlobalConfiguration.Endpoints;//repository.GetAll();
 
-                    Console.Clear();
-
-                    foreach (var item in endpoints)
-                    {
-                        Console.WriteLine("Serial number:" + item.SerialNumber);
-                        Console.WriteLine("Model:" + item.ModelId);
-                        Console.WriteLine("Firmware Version:" + item.FirmwareVersion);
-                        Console.WriteLine("Number:" + item.Number);
-                        Console.WriteLine("State:" + item.State);
-                        Console.WriteLine("");
-                    }
-
-                    Console.WriteLine($"Endpoints count: [{ endpoints.Count}]");
-
-                    Console.WriteLine("");
-                    Console.WriteLine("Press a key to continue.");
-                    Console.ReadLine();
+                    ListAllEndpoints(endpointService);
 
                     return true;
 
                 case "5":
-                    return false;
+
+                    FindAnEndpoint(endpointService);
+
+                    return true;
 
                 case "6":
 
-                    return false;
+                    return Exit(); 
 
                 default:
                     return true;
             }
         }
 
-        private static void EditEndpoint()
+        private static bool Exit()
         {
-            Console.WriteLine("Enter a Serial number:");
-            var serialNumberEdit = Console.ReadLine();
-
-            while (EndpointValidation.SerialNumber(serialNumberEdit))
+            ConsoleKey response;
+            do
             {
-                Console.WriteLine("Serial can't be empty! Input your Serial once more");
-                serialNumberEdit = Console.ReadLine();
-            }
-            var endpointToEdit = GlobalConfiguration.Endpoints.Where(e => e.SerialNumber == serialNumberEdit)?.FirstOrDefault();
+                Console.Write("Are you sure you want to exit? [y/n] ");
+                response = Console.ReadKey(false).Key;   
+                if (response != ConsoleKey.Enter)
+                    Console.WriteLine();
 
-            if (endpointToEdit != null)
+            } while (response != ConsoleKey.Y && response != ConsoleKey.N);
+
+            if (response == ConsoleKey.Y)
             {
-                GlobalConfiguration.Endpoints.Remove(endpointToEdit);
-                CreateEndpoint(new Endpoint());
+                return false;
             }
             else
             {
-                Console.WriteLine("Serial not found!");
-                Console.WriteLine("");
-                Console.WriteLine("Press a key to continue.");
-                Console.ReadLine();
+                return true;
             }
+
         }
 
-        private static void CreateEndpoint(Endpoint endpointEntity)
+        private static void FindAnEndpoint(IEndpointService endpointService)
         {
+            endpointService.Find();
+        }
 
-            Console.WriteLine("Serial number:");
-            var serialNumber = Console.ReadLine();
+        private static void ListAllEndpoints(IEndpointService endpointService)
+        {
+            endpointService.ListAll();
+        }
 
-            while (EndpointValidation.SerialNumber(serialNumber))
-            {
-                Console.WriteLine("Serial can't be empty! Input your Serial once more");
-                serialNumber = Console.ReadLine();
-            }
-            endpointEntity.SerialNumber = serialNumber;
+        private static void DeleteEndpoint(IEndpointService endpointService)
+        {
+            endpointService.Delete();
+        }
 
+        private static void EditEndpoint(IEndpointService endpointService)
+        {
+            endpointService.Edit();
+        }
 
-            Console.WriteLine("Model Id:");
-            var modelId = Console.ReadLine();
-
-            while (EndpointValidation.ModelId(modelId))
-            {
-                Console.WriteLine("Model can't be empty and a number (16,17,18,19)! Input your Model once more");
-                modelId = Console.ReadLine();
-            }
-
-            endpointEntity.ModelId = Convert.ToInt16(modelId);
-
-
-            Console.WriteLine("Number:");
-            var number = Console.ReadLine();
-
-            while (EndpointValidation.Number(number))
-            {
-                Console.WriteLine("Number can't be empty and a number! Input your number once more");
-                number = Console.ReadLine();
-            }
-
-            endpointEntity.Number = Convert.ToInt16(number);
-
-
-            Console.WriteLine("Firmware Version:");
-            var firmwareVersion = Console.ReadLine();
-
-            while (EndpointValidation.FirmwareVersion(firmwareVersion))
-            {
-                Console.WriteLine("Firmware Version can't be empty! Input your Firmware Version once more");
-                firmwareVersion = Console.ReadLine();
-            }
-
-            endpointEntity.FirmwareVersion = firmwareVersion;
-
-
-            Console.WriteLine("State:");
-            var state = Console.ReadLine();
-
-            while (EndpointValidation.State(state))
-            {
-                Console.WriteLine("State Version can't be empty and a number (0,1,2) ! Input your State Version once more");
-                state = Console.ReadLine();
-            }
-
-            endpointEntity.State = Convert.ToInt16(state);
-
-            //repository.Insert(endpointEntity);
-
-            GlobalConfiguration.Endpoints.Add(endpointEntity);
+        private static void CreateEndpoint(IEndpointService endpointService)
+        {
+            endpointService.Create(new Endpoint());
         }
     }
 }

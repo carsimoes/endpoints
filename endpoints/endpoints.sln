@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Endpoints", "Endpoints.csproj", "{413CF172-273E-4F58-B7BA-51A227179DC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Endpoints", "Endpoints.csproj", "{413CF172-273E-4F58-B7BA-51A227179DC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Endpoints.Tests", "..\Endpoints.Tests\Endpoints.Tests.csproj", "{C7BDE55B-63CB-4CAD-854D-A8817794D09D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Endpoints.Tests", "..\Endpoints.Tests\Endpoints.Tests.csproj", "{C7BDE55B-63CB-4CAD-854D-A8817794D09D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Endpoints.Business", "..\Endpoints.Business\Endpoints.Business.csproj", "{CDE2A7A8-AEA1-4766-8045-13E59915C01A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{C7BDE55B-63CB-4CAD-854D-A8817794D09D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7BDE55B-63CB-4CAD-854D-A8817794D09D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7BDE55B-63CB-4CAD-854D-A8817794D09D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDE2A7A8-AEA1-4766-8045-13E59915C01A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDE2A7A8-AEA1-4766-8045-13E59915C01A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDE2A7A8-AEA1-4766-8045-13E59915C01A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDE2A7A8-AEA1-4766-8045-13E59915C01A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
