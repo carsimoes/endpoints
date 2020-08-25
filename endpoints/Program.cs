@@ -1,10 +1,8 @@
-﻿using Endpoints.Data;
-using Endpoints.Entity;
+﻿using Endpoints.Business.Entity;
+using Endpoints.Business.Services;
 using Endpoints.Services;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Linq;
 
 namespace endpoints
 {
@@ -105,27 +103,63 @@ namespace endpoints
 
         private static void FindAnEndpoint(IEndpointService endpointService)
         {
-            endpointService.Find();
+            try
+            {
+                endpointService.Find();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         private static void ListAllEndpoints(IEndpointService endpointService)
         {
-            endpointService.ListAll();
+            try
+            {
+                endpointService.ListAll();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         private static void DeleteEndpoint(IEndpointService endpointService)
         {
-            endpointService.Delete();
+            try
+            {
+                endpointService.Delete();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         private static void EditEndpoint(IEndpointService endpointService)
         {
-            endpointService.Edit();
+            try
+            {
+                endpointService.Edit();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         private static void CreateEndpoint(IEndpointService endpointService)
         {
-            endpointService.Create(new Endpoint());
+            try
+            {
+                endpointService.Create(new Endpoint());
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

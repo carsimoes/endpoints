@@ -1,10 +1,10 @@
-﻿using Endpoints.Data;
+﻿using Endpoints.Business.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Endpoints.Entity
+namespace Endpoints.Business.Entity
 {
     public static class EndpointValidation
     {

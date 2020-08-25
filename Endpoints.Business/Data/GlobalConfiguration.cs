@@ -1,9 +1,7 @@
-﻿using Endpoints.Entity;
-using System;
+﻿using Endpoints.Business.Entity;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Endpoints.Data
+namespace Endpoints.Business.Data
 {
     public static class GlobalConfiguration
     {

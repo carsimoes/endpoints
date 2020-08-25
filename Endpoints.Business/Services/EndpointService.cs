@@ -1,9 +1,9 @@
-﻿using Endpoints.Data;
-using Endpoints.Entity;
+﻿using Endpoints.Business.Data;
+using Endpoints.Business.Entity;
+using Endpoints.Business.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Endpoints.Services
 {

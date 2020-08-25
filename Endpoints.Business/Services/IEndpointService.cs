@@ -1,9 +1,7 @@
-﻿using Endpoints.Entity;
-using System;
+﻿using Endpoints.Business.Entity;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Endpoints.Services
+namespace Endpoints.Business.Services
 {
     public interface IEndpointService
     {

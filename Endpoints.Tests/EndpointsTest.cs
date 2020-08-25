@@ -1,10 +1,6 @@
-using AutoFixture;
-using Endpoints.Data;
-using Endpoints.Entity;
-using Endpoints.Services;
-using Microsoft.EntityFrameworkCore;
+using Endpoints.Business.Entity;
+using Endpoints.Business.Services;
 using Moq;
-using System;
 using System.Collections.Generic;
 using Xunit;
 

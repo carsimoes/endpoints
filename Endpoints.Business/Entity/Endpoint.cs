@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Endpoints.Entity
+namespace Endpoints.Business.Entity
 {
     public class Endpoint
     {
